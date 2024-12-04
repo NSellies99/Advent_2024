@@ -6,7 +6,6 @@ from pathlib import Path
 location_file_path = Path(os.path.dirname(os.path.realpath(__file__))) / "locations.csv"
 
 
-
 def distance_calculator():
     """Calculates the distance between the two location lists"""
     locations_one: list[int] = []
@@ -33,11 +32,10 @@ def similarity_calculator():
     locations_one: list[int] = []
     locations_two: list[int] = []
 
-
     with open(location_file_path, mode="r") as location_file:
         location_reader = csv.reader(location_file)
 
-        # Add both lists from CSV as a heap
+        # Add both lists from CSV
         for line in location_reader:
             locations_one.append(int(line[0]))
             locations_two.append(int(line[1]))
