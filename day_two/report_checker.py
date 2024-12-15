@@ -1,4 +1,3 @@
-from functools import reduce
 import os
 from pathlib import Path
 
