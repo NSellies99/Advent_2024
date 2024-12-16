@@ -36,7 +36,7 @@ def search_xmas():
             else:
                 words_found += 1
         
-    print(f"Found {"".join(WORD)} {words_found} times.")
+    print(f"Found XMAS {words_found} times.")
 
 def search_x_mas():
     """Searches for all instances of a cross shaped MAS in the crossword"""
@@ -49,7 +49,7 @@ def search_x_mas():
     crossword_list = list(crossword.split("\n"))
 
     x_mas_found = 0
-    
+
     # Use A as a hub to look around
     for match in re.compile("A").finditer(squashed_data):
         position = match.start() % width
