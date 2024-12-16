@@ -14,37 +14,26 @@ def execute_multiply_commands():
     with open(commands_file_path, "r") as commands_file:
         commands = commands_file.read().replace("\n", "")
 
-        command_string = get_startup_commands(commands)
-        command_string += "".join(get_enabled_commands(commands))
-
         # Pattern for detecting the mul() commands
-        command_pattern = re.compile(r"(mul\(\d+,\d+\))")
+        command_pattern = re.compile(r"(don't\(\))|(do\(\))|(mul\(\d+,\d+\))")
 
         # Pattern for detecting the parameters inside a mul command
-        parameters_pattern = re.compile(r"\d+,\d+")
+        parameters_pattern = re.compile(r"\d+")
 
         total_sum = 0
-        for command in command_pattern.findall(command_string):
-            digits = parameters_pattern.search(command).group().split(",")
-            total_sum += reduce(lambda x,y: int(x) * int(y), digits)
+        execute_commands = True
+        for command_match in command_pattern.finditer(commands):
+            command = command_match.group()
+            match(command):
+                case "don't()":
+                    execute_commands = False
+                case "do()":
+                    execute_commands = True
+                case _:
+                    if execute_commands:
+                        digits = parameters_pattern.findall(command)
+                        total_sum += reduce(lambda x,y: int(x) * int(y), digits)
     
     print(f"Total command sum is {total_sum}")
-
-def get_startup_commands(data: str) -> str:
-    """
-    Gets all commands before the first don't()
-    Commands are enabled until don't() disables them
-    """
-    startup_pattern = re.compile(r".*?(?=don't\(\))")
-    return startup_pattern.search(data).group()
-
-def get_enabled_commands(data: str) -> str:
-    """
-    Gets all commands between do's and don'ts.
-    These count as enabled commands
-    """
-    enable_pattern = re.compile(r"(?<=do\(\))(.*?)(?=don't\(\))")
-    return enable_pattern.findall(data)
-
 
 execute_multiply_commands()
